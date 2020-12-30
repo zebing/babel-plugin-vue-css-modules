@@ -1,0 +1,26 @@
+{
+  "name": "vue-webpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.12.11",
+    "@vue/compiler-sfc": "^3.0.4",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^5.0.1",
+    "html-webpack-plugin": "^5.0.0-beta.1",
+    "style-loader": "^2.0.0",
+    "vue-loader": "^16.1.2",
+    "webpack": "^5.11.1"
+  },
+  "dependencies": {
+    "vue": "^3.0.4"
+  }
+}

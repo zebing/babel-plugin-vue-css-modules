@@ -1,4 +1,4 @@
 import { createApp } from 'vue';
-import HelloWorld from '@/HelloWorld';
+import List from '@/List';
 
-createApp(HelloWorld).mount(document.body);
+createApp(List).mount(document.body);

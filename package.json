@@ -1,0 +1,48 @@
+{
+  "name": "babel-plugin-vue-css-modules",
+  "version": "1.0.0",
+  "description": "babel-plugin-vue-css-modules",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development rollup -c -w",
+    "build": "del dist && cross-env NODE_ENV=production rollup -c"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,js,json}": [
+      "eslint --fix"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zebing/babel-plugin-vue-css-modules.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zebing/babel-plugin-vue-css-modules/issues"
+  },
+  "homepage": "https://github.com/zebing/babel-plugin-vue-css-modules#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
+    "@rollup/plugin-typescript": "^8.1.0",
+    "@rollup/plugin-url": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.1",
+    "cross-env": "^7.0.3",
+    "del-cli": "^3.0.1",
+    "eslint": "^7.16.0",
+    "jest": "^26.6.3",
+    "rollup": "^2.35.1",
+    "rollup-plugin-uglify": "^6.0.4",
+    "tslib": "^2.0.3",
+    "typescript": "^4.1.3"
+  }
+}

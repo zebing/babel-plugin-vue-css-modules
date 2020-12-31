@@ -1,5 +1,6 @@
 import data from './data';
 import styles from './styles.css';
+import styles1 from './styles1.css';
 
 export default {
   data () {

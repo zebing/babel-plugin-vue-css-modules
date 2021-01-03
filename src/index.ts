@@ -1,5 +1,5 @@
 import { isStyleImport, isArray } from './shared';
-import traverse from './traverse';
+import traverser from './traverser';
 import getCssModules from './getCssModules';
 import resolveImports from './resolveImports';
 
@@ -27,7 +27,7 @@ export default ({ types }) => {
             path
           });
 
-          path.traverse(traverse, state);
+          path.traverse(traverser(styleImportsTokens), state);
         }
       }
     }

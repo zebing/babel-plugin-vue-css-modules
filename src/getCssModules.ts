@@ -1,4 +1,4 @@
-import { importDeclaration } from './shared';
+import { importDeclaration, getStyles } from './shared';
 import defaultOptions from './defaultOptions';
 
 interface Options {
@@ -20,14 +20,16 @@ export default (
     return {};
   }
 
-  return styleImports.map((node: any) => {
+  let lastImportIndex = styleImports[styleImports.length - 1].index;
+
+  const normalizeStyles: any =  styleImports.map((node: any) => {
     let importDefaultSpecifier: any = 
       node.specifiers.find((n: any) => 
         types.isImportDefaultSpecifier(n)
       );
     
     if (importDefaultSpecifier) {
-      return importDefaultSpecifier.local;
+      return node;
     }
 
     const importIdentifier: any = path.scope.generateUidIdentifier('styles');
@@ -38,8 +40,13 @@ export default (
       nodePath.replaceWith(importDefault);
     } else {
       nodePath.insertAfter(importDefault);
+      lastImportIndex++;
     }
 
-    return importIdentifier;
-  })
+    return importDefault;
+  });
+  const styleIdentifier = path.scope.generateUidIdentifier('styles');
+  const stylesNode: any = getStyles(types, styleIdentifier, normalizeStyles);
+  path.get(`body.${lastImportIndex}`).insertAfter(stylesNode);
+  return stylesNode;
 }

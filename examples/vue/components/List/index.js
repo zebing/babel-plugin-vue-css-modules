@@ -11,7 +11,7 @@ export default {
 
   render () {
     return (
-      <div class={styles.wrap}>
+      <div class="wrap">
         {
           data.data.content.map((item) =>
             <div class={styles.item}>

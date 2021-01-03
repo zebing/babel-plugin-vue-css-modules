@@ -21,23 +21,25 @@ export default (
   }
 
   return styleImports.map((node: any) => {
-    let importDefaultSpecifier: boolean = 
+    let importDefaultSpecifier: any = 
       node.specifiers.find((n: any) => 
         types.isImportDefaultSpecifier(n)
       );
-
-    if (!importDefaultSpecifier) {
-      importDefaultSpecifier = path.scope.generateUidIdentifier('styles');
-      const importDefault: any = importDeclaration(types, importDefaultSpecifier, node.source);
-      const nodePath: any = path.get(`body.${node.index}`);
-
-      if (removeImport) {
-        nodePath.replaceWith(importDefault);
-      } else {
-        nodePath.insertAfter(importDefault);
-      }
+    
+    if (importDefaultSpecifier) {
+      return importDefaultSpecifier.local;
     }
 
-    return importDefaultSpecifier;
+    const importIdentifier: any = path.scope.generateUidIdentifier('styles');
+    const importDefault: any = importDeclaration(types, importIdentifier, node.source);
+    const nodePath: any = path.get(`body.${node.index}`);
+
+    if (removeImport) {
+      nodePath.replaceWith(importDefault);
+    } else {
+      nodePath.insertAfter(importDefault);
+    }
+
+    return importIdentifier;
   })
 }

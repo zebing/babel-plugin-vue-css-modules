@@ -3,9 +3,9 @@ export function importDeclaration<T>(types: any, defaultSpecifier: T, source: T)
   return types.importDeclaration(
     [
       types.importDefaultSpecifier(
-        types.Identifier(defaultSpecifier)
+        defaultSpecifier
       )
     ],
-    types.stringLiteral(source)
+    source
   );
 }

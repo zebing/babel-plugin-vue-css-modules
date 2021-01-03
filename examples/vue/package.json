@@ -22,6 +22,8 @@
     "webpack": "^5.11.1"
   },
   "dependencies": {
+    "postcss": "^8.2.2",
+    "postcss-modules": "^4.0.0",
     "vue": "^3.0.4"
   }
 }

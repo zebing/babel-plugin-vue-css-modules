@@ -1,5 +1,6 @@
 import path  from 'path';
 export * from './utils';
+export * from './node';
 
 // 判断import是否是样式文件
 export const isStyleImport = (filePath: string, cssFile: string[]): boolean => {

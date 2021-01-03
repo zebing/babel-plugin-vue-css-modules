@@ -1,4 +1,6 @@
 export default {
   cssFile: ['css', 'scss', 'less'],
-  styleName: 'classname',
+  styleName: 'class',
+  exclude: /node_modules/,
+  removeImport: true
 }

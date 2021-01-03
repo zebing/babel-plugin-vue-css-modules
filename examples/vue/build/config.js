@@ -2,9 +2,10 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+const babelPluginVueCssModules = require('../../../dist').default;
 
 const response = require('./response');
-const context = path.resolve(process.cwd());
+const context = path.resolve(__dirname, '../');
 
 module.exports = {
   // mode: 'development',
@@ -25,7 +26,18 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        use: 'babel-loader'
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: [],
+            plugins: [
+              "@vue/babel-plugin-jsx",
+              babelPluginVueCssModules
+            ]
+          }
+        }
       },
       {
         test: /\.css$/,

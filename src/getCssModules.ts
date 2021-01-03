@@ -1,26 +1,43 @@
-import postcss from 'postcss';
-import postcssModules from 'postcss-modules';
-import fs from 'fs';
-import { getTargetPath } from './shared';
+import { importDeclaration } from './shared';
+import defaultOptions from './defaultOptions';
 
-export default async (styleImports: any = [], state: any) => {
+interface Options {
+  removeImport: boolean,
+  types: any,
+  path: any
+}
+
+export default (
+  styleImports: any = [], 
+  { 
+    removeImport = defaultOptions.removeImport, 
+    types,
+    path
+  }: Options
+): any => {
   // import style 为空
   if (!styleImports.length) {
     return {};
   }
-  const runner = postcss([postcssModules]);
-  styleImports.map((node) => 
-    new Promise((resolve, reject) => {
-      const targetPath = getTargetPath(node.source.value, state);
-      runner.process(fs.readFileSync(targetPath, 'utf-8'))
-      .then(result => {
-        console.log(result)
-      })
-    })
-  ) 
 
-  const tokens = await runner.process(fs.readFileSync('src/app.css'))
-    .then(result => {
-      console.log(result)
-    })
+  return styleImports.map((node: any) => {
+    let importDefaultSpecifier: boolean = 
+      node.specifiers.find((n: any) => 
+        types.isImportDefaultSpecifier(n)
+      );
+
+    if (!importDefaultSpecifier) {
+      importDefaultSpecifier = path.scope.generateUidIdentifier('styles');
+      const importDefault: any = importDeclaration(types, importDefaultSpecifier, node.source);
+      const nodePath: any = path.get(`body.${node.index}`);
+
+      if (removeImport) {
+        nodePath.replaceWith(importDefault);
+      } else {
+        nodePath.insertAfter(importDefault);
+      }
+    }
+
+    return importDefaultSpecifier;
+  })
 }

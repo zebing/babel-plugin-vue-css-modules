@@ -1,3 +1,4 @@
+<script>
 import data from './data';
 import './styles.css';
 import './styles1.css';
@@ -12,7 +13,7 @@ export default {
   render () {
     return (
       <div class="wrap">
-        <div class="test">test</div>
+        <div class="jsx">test</div>
         {
           data.data.content.map((item) =>
             <div class="item">
@@ -37,3 +38,9 @@ export default {
     )
   }
 }
+</script>
+<style module>
+.jsx {
+  border: 1px solid;
+}
+</style>

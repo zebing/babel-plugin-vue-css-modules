@@ -2,21 +2,21 @@ import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import url from '@rollup/plugin-url';
-import typescript from '@rollup/plugin-typescript';
+import { getBabelOutputPlugin } from '@rollup/plugin-babel';
 
 const external = [];
 const plugins = [
   json(),
   resolve({
-    extensions: [ '.ts', '.js', '.json' ]
+    extensions: [ '.js', '.json' ]
   }),
   commonjs(),
   url(),
-  typescript()
+  getBabelOutputPlugin()
 ];
 
 module.exports = {
-  input: 'src/index.ts',
+  input: 'src/index.js',
   output: {
     dir: 'dist',
     format: 'cjs',

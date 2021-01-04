@@ -9,11 +9,12 @@ export default ({ types }) => {
     name: 'babel-plugin-vue-css-modules',
     visitor: {
       Program: {
-        enter (path: any, state: any): void {
-          const styleImports: any[] = resolveImports(path, {
+        enter (path, state) {
+          const styleImports = resolveImports({
+            path,
+            types,
             cssFile: state.opts.cssFile,
-            exclude: state.opts.exclude,
-            types: types
+            exclude: state.opts.exclude
           });
           
           // 该文件无需处理
@@ -21,13 +22,17 @@ export default ({ types }) => {
             return;
           }
 
-          const styleImportsTokens: object = getCssModules(styleImports, {
+          const tokens = getCssModules({
+            imports: styleImports,
             removeImport: state.opts.removeImport, 
             types,
             path
           });
 
-          path.traverse(traverser(styleImportsTokens), state);
+          path.traverse(traverser({
+            types,
+            tokens
+          }), state);
         }
       }
     }

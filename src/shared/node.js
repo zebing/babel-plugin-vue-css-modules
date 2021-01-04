@@ -17,20 +17,27 @@ export function getStyles(types, stylesIdentifier, styleImports) {
     [
       types.variableDeclarator(
         stylesIdentifier,
-        types.callExpression(
-          types.memberExpression(
-            types.identifier('Object'),
-            types.identifier('assign'),
-          ),
-          [
-            types.ObjectExpression([]),
-            ...styleImports.map(node => node.specifiers[0].local)
-          ]
-        )
+        ObjectAssign(types, [
+          types.ObjectExpression([]),
+          ...styleImports.map(node => node.specifiers[0].local)
+        ])
       )
     ]
   )
 } 
+
+// 构建Object.assign
+export function ObjectAssign(types, argument) {
+  return types.expressionStatement(
+    types.callExpression(
+      types.memberExpression(
+        types.identifier('Object'),
+        types.identifier('assign'),
+      ),
+      argument
+    )
+  )
+}
 
 // 构建jsx节点
 export function JSXAttribute(types, jsxAttributeName, stylesObjectName, propertyName) {

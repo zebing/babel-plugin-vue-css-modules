@@ -1,15 +1,13 @@
-import { JSXAttributeValue } from './shared';
+import { JSXAttributeValue, ObjectAssign } from './shared';
 
 export default ({ types, tokens }) => {
   return {
     ObjectMethod(path, state) {
       if (path.node.key.name === 'render') {
-        const node = types.expressionStatement(
-          types.callExpression(
-            types.memberExpression(
-              types.identifier('Object'),
-              types.identifier('assign'),
-            ),
+        path.get('body').unshiftContainer(
+          'body', 
+          ObjectAssign(
+            types, 
             [
               tokens.declarations[0].id,
               types.memberExpression(
@@ -18,8 +16,7 @@ export default ({ types, tokens }) => {
               ),
             ]
           )
-        )
-        path.get('body').unshiftContainer('body', node);
+        );
       }
     },
 

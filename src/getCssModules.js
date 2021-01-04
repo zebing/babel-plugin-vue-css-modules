@@ -10,7 +10,9 @@ export default ({
   const styleIdentifier = path.scope.generateUidIdentifier('styles');
   
   if (!imports.length) {
-    return getStyles(types, styleIdentifier, []);
+    const emptyNode = getStyles(types, styleIdentifier, []);
+    path.unshiftContainer('body', emptyNode);
+    return emptyNode;
   }
 
   let lastImportIndex = imports[imports.length - 1].index;

@@ -21,9 +21,6 @@ export default ({ types, tokens }) => {
     },
 
     JSXAttribute (path, state) {
-      if (tokens.declarations[0].init.arguments.length < 1) {
-        return;
-      }
       if (path.node.name.name === 'class' && path.node.value.type === 'StringLiteral') {
         path.get('value').replaceWith(
           JSXAttributeValue(

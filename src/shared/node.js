@@ -28,14 +28,12 @@ export function getStyles(types, stylesIdentifier, styleImports) {
 
 // 构建Object.assign
 export function ObjectAssign(types, argument) {
-  return types.expressionStatement(
-    types.callExpression(
-      types.memberExpression(
-        types.identifier('Object'),
-        types.identifier('assign'),
-      ),
-      argument
-    )
+  return types.callExpression(
+    types.memberExpression(
+      types.identifier('Object'),
+      types.identifier('assign'),
+    ),
+    argument
   )
 }
 

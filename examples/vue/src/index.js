@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 // import List from '@/List';
-import TemplateJSX from '@/TemplateJSX';
+// import TemplateJSX from '@/TemplateJSX';
+import Template from '@/Template';
 
 
-createApp(TemplateJSX).mount(document.body);
+createApp(Template).mount(document.body);

@@ -17,7 +17,7 @@ export function stylesNode(types, stylesIdentifier, styleImports) {
     [
       types.variableDeclarator(
         stylesIdentifier,
-        ObjectAssign(types, [
+        objectAssignNode(types, [
           types.ObjectExpression([]),
           ...styleImports.map(node => node.specifiers[0].local)
         ])

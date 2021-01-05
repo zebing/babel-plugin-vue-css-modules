@@ -1,4 +1,3 @@
-import { isStyleImport, isArray } from './shared';
 import traverser from './traverser';
 import getCssModules from './getCssModules';
 import resolveImports from './resolveImports';

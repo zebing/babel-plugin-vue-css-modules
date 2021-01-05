@@ -1,5 +1,4 @@
 import defaultOptions from './defaultOptions';
-import { isStyleImport, isArray } from './shared';
 
 export default ({ path, cssFile = defaultOptions.cssFile, exclude = defaultOptions.exclude, types }) => {
 

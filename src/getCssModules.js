@@ -26,11 +26,12 @@ export default ({
 
     const styleScopeUid = path.scope.generateUidIdentifier('styles');
     const styleImportNode = importDeclarationNode(types, styleScopeUid, node.source);
+    const lastImportNode = path.get(`body.${node.index}`);
 
     if (removeImport) {
-      lastImportIndex.replaceWith(styleImportNode);
+      lastImportNode.replaceWith(styleImportNode);
     } else {
-      lastImportIndex.insertAfter(styleImportNode);
+      lastImportNode.insertAfter(styleImportNode);
       lastImportIndex++;
     }
 

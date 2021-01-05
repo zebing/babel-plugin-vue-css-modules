@@ -1,4 +1,4 @@
-import { JSXAttributeValue, ObjectAssign } from './shared';
+import { jSXAttributeValueNode, objectAssignNode } from './buildNode';
 
 export default ({ types, tokens }) => {
   return {
@@ -18,7 +18,7 @@ export default ({ types, tokens }) => {
       if (path.node.id.name === 'render') {
         path.get('body').unshiftContainer(
           'body', 
-          ObjectAssign(
+          objectAssignNode(
             types,
             [
               tokens.declarations[0].id,
@@ -51,7 +51,7 @@ export default ({ types, tokens }) => {
       if (path.node.key.name === 'render') {
         path.get('body').unshiftContainer(
           'body', 
-          ObjectAssign(
+          objectAssignNode(
             types, 
             [
               tokens.declarations[0].id,
@@ -68,7 +68,7 @@ export default ({ types, tokens }) => {
     JSXAttribute (path, state) {
       if (path.node.name.name === 'class' && path.node.value.type === 'StringLiteral') {
         path.get('value').replaceWith(
-          JSXAttributeValue(
+          jSXAttributeValueNode(
             types,
             tokens.declarations[0].id,
             types.identifier(path.node.value.value)

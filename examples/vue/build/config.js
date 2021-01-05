@@ -41,6 +41,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        // exclude: /node_modules/,
         use: [
           'style-loader',
           {
@@ -48,6 +49,14 @@ module.exports = {
             options: {
               modules: {
                 localIdentName: "[local]-[hash:base64:8]",
+                mode: (resourcePath) => {
+                  console.log(resourcePath, /[\/\\]node_modules[\/\\]/gi.test(resourcePath))
+                  if (/[\/\\]node_modules[\/\\]/gi.test(resourcePath)) {
+                    return "global";
+                  }
+    
+                  return "local";
+                },
               },
             }
           }

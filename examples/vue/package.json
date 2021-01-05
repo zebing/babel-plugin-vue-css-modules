@@ -24,6 +24,7 @@
   "dependencies": {
     "postcss": "^8.2.2",
     "postcss-modules": "^4.0.0",
+    "vant": "^3.0.2",
     "vue": "^3.0.4"
   }
 }

@@ -3,5 +3,9 @@ import { createApp } from 'vue';
 // import TemplateJSX from '@/TemplateJSX';
 import Template from '@/Template';
 
+import Vant from 'vant';
+import 'vant/lib/index.css';
 
-createApp(Template).mount(document.body);
+
+const app = createApp(Template).mount(document.body);
+app.use(Vant);

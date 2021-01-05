@@ -2,6 +2,7 @@ import { jSXAttributeValueNode, objectAssignNode } from './buildNode';
 
 export default ({ types, tokens }) => {
   return {
+    // 将静态节点提升还原
     VariableDeclaration(path, state) {
       if (!/\.vue$/.test(state.filename) || !/^_hoisted_[1-9]+$/gi.test(path.node.declarations[0].id.name)) {
         return;
@@ -14,6 +15,7 @@ export default ({ types, tokens }) => {
       binding.path.remove();
     },
 
+    // 遍历template 模板编译成render函数节点
     FunctionDeclaration(path, state) {
       if (path.node.id.name === 'render') {
         path.get('body').unshiftContainer(
@@ -32,6 +34,7 @@ export default ({ types, tokens }) => {
       }
     },
 
+    // 遍历template编译的节点属性
     ObjectProperty (path, state) {
       if (path.node.key.name === 'class' && path.node.value.type === 'StringLiteral') {
         path.get('value').replaceWith(
@@ -47,6 +50,7 @@ export default ({ types, tokens }) => {
       }
     },
 
+    // 遍历jsx render函数节点
     ObjectMethod(path, state) {
       if (path.node.key.name === 'render') {
         path.get('body').unshiftContainer(
@@ -65,6 +69,7 @@ export default ({ types, tokens }) => {
       }
     },
 
+    // 遍历jsx 节点属性
     JSXAttribute (path, state) {
       if (path.node.name.name === 'class' && path.node.value.type === 'StringLiteral') {
         path.get('value').replaceWith(

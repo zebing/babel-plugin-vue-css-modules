@@ -1,6 +1,7 @@
 import { jSXAttributeValueNode, objectAssignNode } from './buildNode';
+import defaultOptions from './defaultOptions';
 
-export default ({ types, tokens }) => {
+export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
   return {
     // 将静态节点提升还原
     VariableDeclaration(path, state) {
@@ -71,7 +72,10 @@ export default ({ types, tokens }) => {
 
     // 遍历jsx 节点属性
     JSXAttribute (path, state) {
-      if (path.node.name.name === 'class' && path.node.value.type === 'StringLiteral') {
+      if (path.node.name.name !== styleName || path.node.value.type !== 'StringLiteral') return;
+
+      // 默认 styleName
+      if (styleName === 'class') {
         path.get('value').replaceWith(
           jSXAttributeValueNode(
             types,
@@ -79,6 +83,37 @@ export default ({ types, tokens }) => {
             types.identifier(path.node.value.value)
           )
         )
+        return;
+      }
+      
+      const classNode = path.container.find(node => node.name.name === 'class')
+      console.log(path)
+      // 值是字符串
+      if (types.isStringLiteral(classNode)) {
+        path.get('value').replaceWith(
+          types.jsxExpressionContainer(
+            types.binaryExpression(
+              '+', 
+              types.binaryExpression(
+                '+',
+                classNode.value.value,
+                types.stringLiteral(' ')
+              ),
+              jSXAttributeValueNode(
+                types,
+                tokens.declarations[0].id,
+                types.identifier(path.node.value.value)
+              )
+            )
+          )
+        )
+
+        // 值是jsx表达式
+      } else if (types.isJSXExpressionContainer(classNode)) {
+        
+        // 不存在
+      } else {
+
       }
     }
   }

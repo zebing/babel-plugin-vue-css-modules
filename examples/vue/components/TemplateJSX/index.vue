@@ -12,7 +12,7 @@ export default {
 
   render () {
     return (
-      <div class="wrap">
+      <div classname="classname" class="wrap">
         <div class="jsx">test</div>
         {
           data.data.content.map((item) =>

@@ -30,7 +30,8 @@ export default ({ types }) => {
 
           path.traverse(traverser({
             types,
-            tokens
+            tokens,
+            styleName: state.opts.styleName
           }), state);
         }
       }

@@ -50,8 +50,11 @@ module.exports = {
               modules: {
                 localIdentName: "[local]-[hash:base64:8]",
                 mode: (resourcePath) => {
-                  console.log(resourcePath, /[\/\\]node_modules[\/\\]/gi.test(resourcePath))
                   if (/[\/\\]node_modules[\/\\]/gi.test(resourcePath)) {
+                    return "global";
+                  }
+
+                  if (/reset\.css$/gi.test(resourcePath)) {
                     return "global";
                   }
     

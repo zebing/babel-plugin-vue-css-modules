@@ -1,11 +1,12 @@
 import { createApp } from 'vue';
 // import List from '@/List';
 // import TemplateJSX from '@/TemplateJSX';
-import Template from '@/Template';
+import Index from '@/Index';
 
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import './reset.css';
 
-
-const app = createApp(Template).mount(document.body);
+const app = createApp(Index)
 app.use(Vant);
+app.mount(document.body);

@@ -1,16 +1,17 @@
-import { importDeclaration, getStyles } from './shared';
 import defaultOptions from './defaultOptions';
+import { importDeclarationNode, stylesNode } from './buildNode';
 
 export default ({ 
-  imports,
+  imports = [],
   removeImport = defaultOptions.removeImport, 
   types,
   path
 }) => {
   const styleIdentifier = path.scope.generateUidIdentifier('styles');
   
+  // import style为空, 返回空节点
   if (!imports.length) {
-    const emptyNode = getStyles(types, styleIdentifier, []);
+    const emptyNode = stylesNode(types, styleIdentifier, []);
     path.unshiftContainer('body', emptyNode);
     return emptyNode;
   }
@@ -18,27 +19,26 @@ export default ({
   let lastImportIndex = imports[imports.length - 1].index;
 
   // 将import 转化成 import styles from 'url'形式
-  const normalizeStyles =  imports.map((node) => {
-    if (node.specifiers.length) {
+  const normalizeStylesNode =  imports.map((node) => {
+    if (node.specifiers[0] && types.isImportDefaultSpecifier(node.specifiers[0])) {
       return node;
     }
 
-    const importIdentifier = path.scope.generateUidIdentifier('styles');
-    const importDefault = importDeclaration(types, importIdentifier, node.source);
-    const nodePath = path.get(`body.${node.index}`);
+    const styleScopeUid = path.scope.generateUidIdentifier('styles');
+    const styleImportNode = importDeclarationNode(types, styleScopeUid, node.source);
 
     if (removeImport) {
-      nodePath.replaceWith(importDefault);
+      lastImportIndex.replaceWith(styleImportNode);
     } else {
-      nodePath.insertAfter(importDefault);
+      lastImportIndex.insertAfter(styleImportNode);
       lastImportIndex++;
     }
 
-    return importDefault;
+    return styleImportNode;
   });
 
-  const stylesNode = getStyles(types, styleIdentifier, normalizeStyles);
-  path.get(`body.${lastImportIndex}`).insertAfter(stylesNode);
+  const node = stylesNode(types, styleIdentifier, normalizeStylesNode);
+  path.get(`body.${lastImportIndex}`).insertAfter(node);
 
-  return stylesNode;
+  return node;
 }

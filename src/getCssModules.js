@@ -19,12 +19,7 @@ export default ({
 
   // 将import 转化成 import styles from 'url'形式
   const normalizeStyles =  imports.map((node) => {
-    let hasDefaultSpecifier = 
-      node.specifiers.find((n) => 
-        types.isImportDefaultSpecifier(n)
-      );
-    
-    if (hasDefaultSpecifier) {
+    if (node.specifiers.length) {
       return node;
     }
 

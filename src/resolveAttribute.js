@@ -1,5 +1,46 @@
-export const solveObjectAttribute = () => {
-  { path, types, stylesId, styleName }
+export const solveObjectAttribute = ({ path, types, stylesId, styleName }) => {
+  // 默认styleName
+  if (styleName === 'class') {
+    path.get('value').replaceWith(
+      types.logicalExpression(
+        '||',
+        types.memberExpression(
+          stylesId,
+          types.identifier(path.node.value.value)
+        ),
+        types.stringLiteral(path.node.value.value)
+      )
+    )
+    return;
+  }
+
+  // 查找class属性
+  const classNode = path.container.find(node => node.key.name === 'class');
+
+  // class 属性不存在
+  if (!classNode) {
+    const property = types.objectProperty(
+      types.identifier('class'),
+      types.memberExpression(
+        stylesId,
+        types.identifier(path.node.value.value)
+      )
+    );
+
+    path.container.push(property);
+    path.remove();
+    return;
+  }
+
+  solveMultipleValue({
+    styleNamePathValue: path.node.value,
+    classAttributeValue: classNode.value,
+    classAttribute: classNode,
+    types,
+    stylesId,
+    isJSX: false
+  });
+  path.remove();
 }
 
 export const solveJSXAttribute = ({ path, types, stylesId, styleName }) => {
@@ -21,13 +62,7 @@ export const solveJSXAttribute = ({ path, types, stylesId, styleName }) => {
   }
 
   // 查找class属性
-  const classNode = path.container.find((node, index) => {
-    if (node.name.name === 'class') {
-      node.index = index;
-      return true;
-    }
-    return false;
-  });
+  const classNode = path.container.find(node => node.name.name === 'class');
 
   // class 属性不存在
   if (!classNode) {
@@ -63,7 +98,7 @@ export const solveJSXAttribute = ({ path, types, stylesId, styleName }) => {
   } else if (types.isJSXExpressionContainer(classNode.value)) {
     solveMultipleValue({
       styleNamePathValue: path.node.value,
-      classAttributeValue: classNode.value,
+      classAttributeValue: classNode.value.expression,
       classAttribute: classNode,
       types,
       stylesId
@@ -78,12 +113,12 @@ function solveMultipleValue ({
   classAttribute,
   classAttributeValue,
   types,
-  stylesId
+  stylesId,
+  isJSX = true
 }) {
-  const expression = classAttributeValue.expression;
 
   // 对象表达式
-  if (types.isObjectExpression(expression)) {
+  if (types.isObjectExpression(classAttributeValue)) {
     const property = types.objectProperty(
       types.logicalExpression(
         '||',
@@ -97,22 +132,34 @@ function solveMultipleValue ({
       true
     );
       
-    expression.properties.push(property);
+    classAttributeValue.properties.push(property);
     
     // 数组表达式
-  } else if(types.isArrayExpression(expression)) {
-    expression.elements.push(styleNamePathValue);
+  } else if(types.isArrayExpression(classAttributeValue)) {
+    classAttributeValue.elements.push(
+      types.logicalExpression(
+        '||',
+        types.memberExpression(
+          stylesId,
+          types.identifier(styleNamePathValue.value)
+        ),
+        styleNamePathValue
+      )
+    );
 
     // 其他，权当字符串看待
   } else {
-    const value = types.jsxExpressionContainer(
-      resolveStringValue({ 
-        types, 
-        classAttributeValue: expression, 
-        styleNamePathValue, 
-        stylesId 
-      })
-    );
+    let value = resolveStringValue({ 
+      types, 
+      classAttributeValue, 
+      styleNamePathValue, 
+      stylesId 
+    });
+
+    if (isJSX) {
+      value = types.jsxExpressionContainer(value);
+    }
+
     classAttribute.value = value;
   }
 }

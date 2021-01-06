@@ -1,19 +1,21 @@
 <template>
   <div :class="$style.wrap">
-        <div classname="classname" class="jsx123" :class1="{test: true}" :class2="['test']" :class3="'test'">test</div>
-        <div class="item" v-for="(item, index) in list" :key="index">
-          <div class="left">
-            <div class="title">
+        <div classname="jsx" class="string" >test</div>
+        <div classname="jsx" :class="['array']" >test</div>
+        <div classname="jsx" :class="{obj: true}" >test</div>
+        <div classname="item" v-for="(item, index) in list" :key="index">
+          <div classname="left">
+            <div classname="title">
               {{item.realtimeTitle}}
             </div>
-            <div class="context">
-              <div class="middle">
-                <span class="source">第三方资讯</span>
+            <div classname="context">
+              <div classname="middle">
+                <span classname="source">第三方资讯</span>
                 <span>{{item.sendTime}}</span>
               </div>
             </div>
           </div>
-          <div class="right">
+          <div classname="right">
             <img :src="item.coverUri" />
           </div>
         </div>

@@ -1,6 +1,6 @@
-import { jSXAttributeValueNode, objectAssignNode } from './buildNode';
+import { objectAssignNode } from './buildNode';
 import defaultOptions from './defaultOptions';
-import { solveJSXAttribute } from './resolveAttribute';
+import { solveJSXAttribute, solveObjectAttribute } from './resolveAttribute';
 
 export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
   const stylesId = tokens.declarations[0].id;
@@ -39,21 +39,13 @@ export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
 
     // 遍历template编译的节点属性
     ObjectProperty (path, state) {
-      if (path.node.key.name === 'class' && path.node.value.type === 'StringLiteral') {
-        path.get('value').replaceWith(
-          types.logicalExpression(
-            '||',
-            types.memberExpression(
-              stylesId,
-              types.identifier(path.node.value.value)
-            ),
-            types.stringLiteral(path.node.value.value)
-          )
-        )
-      }
-
       if (path.node.key.name === styleName && path.node.value.type === 'StringLiteral') {
-        console.log(path)
+        solveObjectAttribute({
+          path, 
+          types, 
+          stylesId, 
+          styleName
+        })
       }
     },
 

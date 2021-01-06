@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.wrap">
-        <div class="jsx123">test</div>
+        <div classname="classname" class="jsx123" :class1="{test: true}" :class2="['test']" :class3="'test'">test</div>
         <div class="item" v-for="(item, index) in list" :key="index">
           <div class="left">
             <div class="title">

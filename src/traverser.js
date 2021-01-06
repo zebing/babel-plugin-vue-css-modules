@@ -1,7 +1,9 @@
 import { jSXAttributeValueNode, objectAssignNode } from './buildNode';
 import defaultOptions from './defaultOptions';
+import { solveJSXAttribute } from './resolveAttribute';
 
 export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
+  const stylesId = tokens.declarations[0].id;
   return {
     // 将静态节点提升还原
     VariableDeclaration(path, state) {
@@ -24,7 +26,7 @@ export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
           objectAssignNode(
             types,
             [
-              tokens.declarations[0].id,
+              stylesId,
               types.memberExpression(
                 path.node.params[0],
                 types.identifier('$style'),
@@ -42,12 +44,16 @@ export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
           types.logicalExpression(
             '||',
             types.memberExpression(
-              tokens.declarations[0].id,
+              stylesId,
               types.identifier(path.node.value.value)
             ),
             types.stringLiteral(path.node.value.value)
           )
         )
+      }
+
+      if (path.node.key.name === styleName && path.node.value.type === 'StringLiteral') {
+        console.log(path)
       }
     },
 
@@ -59,7 +65,7 @@ export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
           objectAssignNode(
             types, 
             [
-              tokens.declarations[0].id,
+              stylesId,
               types.memberExpression(
                 types.thisExpression(),
                 types.identifier('$style'),
@@ -72,48 +78,13 @@ export default ({ types, tokens, styleName = defaultOptions.styleName }) => {
 
     // 遍历jsx 节点属性
     JSXAttribute (path, state) {
-      if (path.node.name.name !== styleName || path.node.value.type !== 'StringLiteral') return;
-
-      // 默认 styleName
-      if (styleName === 'class') {
-        path.get('value').replaceWith(
-          jSXAttributeValueNode(
-            types,
-            tokens.declarations[0].id,
-            types.identifier(path.node.value.value)
-          )
-        )
-        return;
-      }
-      
-      const classNode = path.container.find(node => node.name.name === 'class')
-      console.log(path)
-      // 值是字符串
-      if (types.isStringLiteral(classNode)) {
-        path.get('value').replaceWith(
-          types.jsxExpressionContainer(
-            types.binaryExpression(
-              '+', 
-              types.binaryExpression(
-                '+',
-                classNode.value.value,
-                types.stringLiteral(' ')
-              ),
-              jSXAttributeValueNode(
-                types,
-                tokens.declarations[0].id,
-                types.identifier(path.node.value.value)
-              )
-            )
-          )
-        )
-
-        // 值是jsx表达式
-      } else if (types.isJSXExpressionContainer(classNode)) {
-        
-        // 不存在
-      } else {
-
+      if (path.node.name.name === styleName && path.node.value.type === 'StringLiteral') {
+        solveJSXAttribute({
+          path, 
+          types, 
+          stylesId, 
+          styleName
+        });
       }
     }
   }

@@ -12,23 +12,25 @@ export default {
 
   render () {
     return (
-      <div classname="classname" class="wrap">
-        <div class="jsx">test</div>
+      <div classname="wrap" class="classnamename">
+        <div classname="jsx" class={{ test: true, test2: true}}>test</div>
+        <div classname="jsx" class={['test1']}>array class</div>
+        <div classname="jsx" class={'test1'}>string class</div>
         {
           data.data.content.map((item) =>
-            <div class="item">
-              <div class="left">
-                <div class="title">
+            <div classname="item">
+              <div classname="left">
+                <div classname="title">
                   {item.realtimeTitle}
                 </div>
-                <div class="context">
-                  <div class="middle">
-                    <span class="source">第三方资讯</span>
+                <div classname="context">
+                  <div classname="middle">
+                    <span classname="source">第三方资讯</span>
                     <span>{item.sendTime}</span>
                   </div>
                 </div>
               </div>
-              <div class="right">
+              <div classname="right">
                 <img src={item.coverUri} />
               </div>
             </div>

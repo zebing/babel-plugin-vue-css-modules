@@ -90,4 +90,4 @@ export default {
   css modules的转化是由`css-loader`完成的。本插件只作用于css modules的使用。
 * 如果`class="classname"`在css中并不存在会被转化吗？
 
-  不会。在运行中如果没找到相应的css modules名称，插件会显示原来的类名`classname`
+  不会。在运行中如果没找到相应的css modules名称，插件将会保留原来的类名`classname`

@@ -80,3 +80,14 @@ export default {
 ...
 <style>
 ```
+
+### FAQ 
+* templte方式可以通过`import`引入css吗？
+
+  可以。templte通过`<style></style>`或直接`import`都可以。两者都可以共存。
+* 仅在插件中过滤了css文件，但还是被转化成css modules。
+
+  css modules的转化是由`css-loader`完成的。本插件只作用于css modules的使用。
+* 如果`class="classname"`在css中并不存在会被转化吗？
+
+  不会。在运行中如果没找到相应的css modules名称，插件会显示原来的类名`classname`

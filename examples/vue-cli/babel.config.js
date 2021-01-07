@@ -1,11 +1,10 @@
-const babelPluginVueCssModules = require('../../dist').default;
 
 module.exports = {
   presets: [
     '@vue/cli-plugin-babel/preset',
   ],
   plugins: [
-    [babelPluginVueCssModules, {
+    ["@zebing/babel-plugin-vue-css-modules", {
       cssFile: ['css', 'scss', 'less'],
       styleName: 'classname',
       exclude: (path) => {

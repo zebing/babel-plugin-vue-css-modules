@@ -12,7 +12,7 @@ const plugins = [
   }),
   commonjs(),
   url(),
-  getBabelOutputPlugin()
+  getBabelOutputPlugin({ presets: ['@babel/preset-env'] })
 ];
 
 module.exports = {

@@ -1,6 +1,6 @@
 {
   "name": "@zebing/babel-plugin-vue-css-modules",
-  "version": "1.0.0-beta0",
+  "version": "1.0.0-beta1",
   "description": "vue css modules智能转化插件",
   "main": "dist/index.js",
   "scripts": {

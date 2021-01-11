@@ -21,9 +21,13 @@ export const solveObjectAttribute = ({ path, types, stylesId, styleName }) => {
   if (!classNode) {
     const property = types.objectProperty(
       types.identifier('class'),
-      types.memberExpression(
-        stylesId,
-        types.identifier(path.node.value.value)
+      types.logicalExpression(
+        '||',
+        types.memberExpression(
+          stylesId,
+          types.identifier(path.node.value.value)
+        ),
+        types.stringLiteral(path.node.value.value)
       )
     );
 
@@ -69,9 +73,13 @@ export const solveJSXAttribute = ({ path, types, stylesId, styleName }) => {
     const attribute = types.jsxAttribute(
       types.jSXIdentifier('class'),
       types.jsxExpressionContainer(
-        types.memberExpression(
-          stylesId,
-          types.identifier(path.node.value.value)
+        types.logicalExpression(
+          '||',
+          types.memberExpression(
+            stylesId,
+            types.identifier(path.node.value.value)
+          ),
+          types.stringLiteral(path.node.value.value)
         )
       )
     );
